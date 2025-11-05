@@ -1,0 +1,421 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Важно: убираем скролл у контейнера */
+}
+
+/* Заголовок приложения */
+.app-header {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    flex-shrink: 0; /* Заголовок не сжимается */
+}
+
+.app-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.header-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Панель инструментов */
+.toolbar {
+    background: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0; /* Панель не сжимается */
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tool-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.tool-btn:hover {
+    background: #f0f0f0;
+    border-color: #999;
+}
+
+.mode-selector, .view-selector {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+}
+
+/* Основной контейнер редактора - ИСПРАВЛЕНО */
+.editor-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Важно для flex-потомков */
+    overflow: hidden; /* Убираем скролл */
+}
+
+.main-editor {
+    flex: 1;
+    display: flex;
+    min-height: 0; /* Критически важно! */
+    overflow: hidden; /* Убираем скролл */
+}
+
+.editor-panel, .preview-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    min-height: 0; /* Критически важно! */
+}
+
+/* Заголовок редактора */
+.editor-header {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    flex-shrink: 0; /* Заголовок не сжимается */
+}
+
+.btn-small {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* Контейнер для CodeMirror - ИСПРАВЛЕНО */
+.CodeMirror {
+    flex: 1;
+    height: auto !important;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    border: none;
+    background: #fafafa;
+}
+
+.CodeMirror-wrap {
+    height: 100%;
+}
+
+.CodeMirror-scroll {
+    min-height: 100% !important;
+}
+
+/* Предпросмотр */
+.preview-header {
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    flex-shrink: 0; /* Заголовок не сжимается */
+}
+
+.preview-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background: white;
+    min-height: 0; /* Важно */
+}
+
+/* Кнопки */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-export {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-export:hover {
+    background: #219a52;
+}
+
+.btn-ai {
+    background: #9b59b6;
+    color: white;
+}
+
+.btn-ai:hover {
+    background: #8e44ad;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* AI чат */
+.ai-chat {
+    margin-top: 1rem;
+}
+
+.ai-messages {
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    background: #f9f9f9;
+}
+
+.ai-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ai-input input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Статус бар */
+.status-bar {
+    background: #34495e;
+    color: white;
+    padding: 0.5rem 2rem;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.8rem;
+    flex-shrink: 0; /* Статус бар не сжимается */
+}
+
+/* Стили для полноэкранного режима */
+.CodeMirror-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    z-index: 1000;
+}
+
+/* Стили для предпросмотра */
+.preview-content h1, .preview-content h2, .preview-content h3 {
+    margin: 1.5rem 0 1rem 0;
+    color: #2c3e50;
+}
+
+.preview-content h1 {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.preview-content p {
+    margin-bottom: 1rem;
+}
+
+.preview-content ul, .preview-content ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.preview-content code {
+    background: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.preview-content pre {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.preview-content blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #666;
+    font-style: italic;
+}
+
+/* Стили для теорем и доказательств */
+.theorem {
+    background: #e8f5e8;
+    border-left: 4px solid #27ae60;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.proof {
+    background: #e3f2fd;
+    border-left: 4px solid #3498db;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.theorem strong, .proof strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Стили для блоков кода */
+.verbatim {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 1rem 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main-editor {
+        flex-direction: column;
+    }
+
+    .editor-panel, .preview-panel {
+        margin: 0.5rem;
+        min-height: 50vh;
+    }
+
+    .toolbar {
+        padding: 0.5rem;
+        gap: 1rem;
+    }
+
+    .app-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .editor-header, .preview-header {
+        padding: 0.5rem 1rem;
+    }
+
+    .preview-content {
+        padding: 1rem;
+    }
+}
+
+/* Принудительное исправление высоты для разных режимов просмотра */
+.view-editor .preview-panel,
+.view-preview .editor-panel {
+    display: none !important;
+}
+
+.view-split .editor-panel,
+.view-split .preview-panel {
+    display: flex !important;
+}
+
+/* Гарантированное исправление белого блока */
+.editor-panel:after,
+.preview-panel:after {
+    display: none !important;
+}
+
+.CodeMirror-sizer {
+    border: none !important;
+}
+
+.CodeMirror-gutter,
+.CodeMirror-gutters {
+    background: #fafafa !important;
+}

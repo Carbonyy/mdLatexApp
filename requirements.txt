@@ -1,0 +1,11 @@
+Flask==2.3.3
+Flask-WTF==1.1.1
+markdown==3.4.4
+pdfkit==1.0.0
+python-dotenv==1.0.0
+wtforms==3.0.1
+Jinja2==3.1.2
+
+# Для экспорта в PDF требуется wkhtmltopdf
+# установка: https://wkhtmltopdf.org/downloads.html
+# ставим 64 bit windows, затем в app.py вставляем путь к wkhtmltopdf.exe в переменную wkhtmltopdf_path
